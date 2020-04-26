@@ -1,3 +1,6 @@
 .vscode/arduino.json
 .vscode/c_cpp_properties.json
 build/
+src/.vscode/arduino.json
+src/.vscode/c_cpp_properties.json
+test_code/
