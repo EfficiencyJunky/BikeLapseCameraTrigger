@@ -23,7 +23,7 @@
 
 // use this to turn on the serial monitor
 // will post the temperature readings from the thermistor to serial monitor
-#define __SERIAL_MONITOR__
+// #define __SERIAL_MONITOR__
 
 // ************************************************
 //        LIBRARY INCLUDES
@@ -55,8 +55,8 @@
   #define WHEEL_TRIGGER_PIN 12
   #define SHUTTER_TRIGGER_PIN 14
   #define BLE_RESET_PIN 13
-  // #define LED_PIN 11
-  #define LED_PIN LED_RED // onboard LED
+  #define LED_PIN 11
+  // #define LED_PIN LED_RED // onboard LED
   #define RESISTANCE_OFFSET 0
   #define SERIAL_BAUDRATE 115200
 #elif defined(__FEATHER_ESP8266__)
@@ -331,7 +331,7 @@ void updateShutterTriggerButtonLogic(){
     // for short presses it sets the logic based on if the wheel trigger is active
     case NORMAL:
       if (shutterTriggerButton.wasReleased()){
-        // ledController.turnOnOff(wheelTriggerActive);
+        ledController.turnOnOff(wheelTriggerActive);
         sendShutterReleaseCommand();
       }
       else if (shutterTriggerButton.pressedFor(LONG_PRESS)){
@@ -426,13 +426,16 @@ void updateBluetoothResetButtonLogic(){
 
 void resetBluetoothCredentials(){
 
-  digitalWrite(LED_PIN, LOW);
+  // digitalWrite(LED_PIN, LOW);
+  analogWrite(ledPin, 0);
   delay(100);
 
   for(uint8_t i = 0; i < 15; i++){
-    digitalWrite(LED_PIN, HIGH);
+    // digitalWrite(LED_PIN, HIGH);
+    analogWrite(ledPin, 255);
     delay(50);
-    digitalWrite(LED_PIN, LOW);
+    // digitalWrite(LED_PIN, LOW);
+    analogWrite(ledPin, 0);
     delay(50);
   }
 }
@@ -449,7 +452,8 @@ void sendShutterReleaseCommand(){
     if ( connection && connection->connected() && connection->paired() )
     {
       // Turn on red LED when we start sending data
-      digitalWrite(LED_RED, 1);
+      // digitalWrite(LED_RED, 1);
+      analogWrite(LED_RED, 255);
 
       // Send the 'volume down' key press to the peer
       // Check tinyusb/src/class/hid/hid.h for a list of valid consumer usage codes
@@ -462,7 +466,8 @@ void sendShutterReleaseCommand(){
       blehid.consumerKeyRelease(conn_hdl);
 
       // Turn off the red LED
-      digitalWrite(LED_RED, 0);
+      // digitalWrite(LED_RED, 0);
+      analogWrite(LED_RED, 0);
     }
   }
 }

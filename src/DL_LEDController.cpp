@@ -23,48 +23,52 @@ void DL_LEDController::Update() {
         
         // turn the LED ON
         case LED_ON:
-        digitalWrite(ledPin, HIGH);
-        STATE = INACTIVE;
-        break;
+            // digitalWrite(ledPin, HIGH);
+            analogWrite(ledPin, highBrightness);
+            STATE = INACTIVE;
+            break;
         
         // turn the LED OFF
         case LED_OFF:
-        digitalWrite(ledPin, LOW);
-        STATE = INACTIVE;
-        break;
+            // digitalWrite(ledPin, LOW);
+            analogWrite(ledPin, 0);
+            STATE = INACTIVE;
+            break;
         
         // turn the LED ON and then OFF after "ledOnOffInterval" milliseconds
         case LED_ON_OFF:
-        digitalWrite(ledPin, HIGH);
-        if( (millis() - ledOnOffStartTime) > ledOnOffInterval){
-            STATE = LED_OFF;
-        }
-        break;
+            // digitalWrite(ledPin, HIGH);
+            analogWrite(ledPin, highBrightness);
+            if( (millis() - ledOnOffStartTime) > ledOnOffInterval){
+                STATE = LED_OFF;
+            }
+            break;
         
         // turn the LED OFF and then back to PULSE after "ledOnOffInterval" milliseconds
         case LED_OFF_PULSE: 
-        digitalWrite(ledPin, LOW);
-        if( (millis() - ledOnOffStartTime) > ledOnOffInterval){
-            STATE = LED_PULSE;
-        }
-        break;
+            // digitalWrite(ledPin, LOW);
+            analogWrite(ledPin, 0);
+            if( (millis() - ledOnOffStartTime) > ledOnOffInterval){
+                STATE = LED_PULSE;
+            }
+            break;
 
         // slowly pulse the led brightness
         case LED_PULSE:
-        if( (millis() - lastPulseUpdateTime) > pulseUpdateInterval){
-            analogWrite(ledPin, brightness);
+            if( (millis() - lastPulseUpdateTime) > pulseUpdateInterval){
+                analogWrite(ledPin, brightness);
 
-            // change the brightness for next time through the loop:
-            brightness = brightness + fadeAmount;
+                // change the brightness for next time through the loop:
+                brightness = brightness + fadeAmount;
 
-            // reverse the direction of the fading at the ends of the fade:
-            if (brightness <= lowBrightness || brightness >= highBrightness) {
-            fadeAmount = -fadeAmount;
+                // reverse the direction of the fading at the ends of the fade:
+                if (brightness <= lowBrightness || brightness >= highBrightness) {
+                    fadeAmount = -fadeAmount;
+                }
+
+                lastPulseUpdateTime = millis();
             }
-
-            lastPulseUpdateTime = millis();
-        }
-        break;
+            break;
 
     //      default:
     //        break;
