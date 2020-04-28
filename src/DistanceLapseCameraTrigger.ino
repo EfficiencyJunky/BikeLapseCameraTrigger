@@ -8,24 +8,67 @@
   The circuit:
   - LED attached from pin 13 to ground
   - Reed Switch attached to pin 10 from +5V
-  - 10K resistor attached to pin 10 from ground (pulldown resistor)
 
 
   Explain the rest of the circuit here:
   - 390 ohm resistor attached to pin 5 from the annode of an LED who's cathode is attached to ground
 
 */
-
-
-// INFO ON THE BUTTON LIBRARY HERE: https://github.com/JChristensen/JC_Button
-//#include <ESP8266WiFi.h>
-
-#include <JC_Button.h>
-#include "DL_LEDController.h"
+// ************************************************
+//        HARDWARE DECLARATIONS
+// ************************************************
+// #define __ARDUINO_UNO__
+#define __FEATHER_NRF52832__
+// #define __FEATHER_ESP8266__
 
 // use this to turn on the serial monitor
 // will post the temperature readings from the thermistor to serial monitor
-// #define __SERIAL_MONITOR__
+#define __SERIAL_MONITOR__
+
+// ************************************************
+//        LIBRARY INCLUDES
+// ************************************************
+#if defined(__FEATHER_NRF52832__)
+  #include <bluefruit.h>
+  BLEDis bledis;
+  BLEHidAdafruit blehid;
+#elif defined(__FEATHER_ESP8266__)
+  #include <ESP8266WiFi.h>
+#endif
+
+// INFO ON THE BUTTON LIBRARY HERE: https://github.com/JChristensen/JC_Button
+#include <JC_Button.h>
+#include "DL_LEDController.h"
+
+
+// ************************************************
+//        PIN AND HARDWARE DEFINITIONS
+// ************************************************
+#if defined(__ARDUINO_UNO__)
+  #define WHEEL_TRIGGER_PIN 2
+  #define SHUTTER_TRIGGER_PIN 11
+  #define BLE_RESET_PIN 10
+  #define LED_PIN 9
+  #define RESISTANCE_OFFSET 0
+  #define SERIAL_BAUDRATE 9600
+#elif defined(__FEATHER_NRF52832__)
+  #define WHEEL_TRIGGER_PIN 12
+  #define SHUTTER_TRIGGER_PIN 14
+  #define BLE_RESET_PIN 13
+  // #define LED_PIN 11
+  #define LED_PIN LED_RED // onboard LED
+  #define RESISTANCE_OFFSET 0
+  #define SERIAL_BAUDRATE 115200
+#elif defined(__FEATHER_ESP8266__)
+  #define WHEEL_TRIGGER_PIN 14
+  #define SHUTTER_TRIGGER_PIN 12
+  #define BLE_RESET_PIN 13
+  #define LED_PIN 15
+  #define RESISTANCE_OFFSET 10000
+  #define SERIAL_BAUDRATE 9600
+#endif
+
+
 
 /*
  * 
@@ -46,9 +89,6 @@
 // ************************************************
 //        BUTTON LIBRARY VARIABLES
 // ************************************************
-#define WHEEL_TRIGGER_PIN 2
-#define SHUTTER_TRIGGER_PIN 11
-#define BLE_RESET_PIN 10
 #define PULLUP true    // these aren't required in the most recent version of JC_Button because they are defaults when using a button that is set up to be pulled low
 #define INVERT true    // these aren't required in the most recent version of JC_Button because they are defaults when using a button that is set up to be pulled low
 #define DEBOUNCE_MS   40       // sets the debounce time in ms. Should be between 20-50 ms depending on the button
@@ -81,7 +121,7 @@ bool wheelTriggerActive = true;
 // ************************************************
 //        LED PIN AND CONTROL CLASS VARIABLES
 // ************************************************
-#define LED_PIN 9
+
 DL_LEDController ledController(LED_PIN);
 
 
@@ -167,12 +207,72 @@ void setup() {
 //  }
 
 #if defined(__SERIAL_MONITOR__)
-  Serial.begin(9600);       // use the serial port
+  Serial.begin(SERIAL_BAUDRATE);       // use the serial port at the baudrate defined by the hardware
+  #if defined(__FEATHER_NRF52832__)
+    while ( !Serial ) delay(10);   // for nrf52840 with native usb
+  #endif
 #endif
+
+  Bluefruit.begin();
+  Bluefruit.setTxPower(4);    // Check bluefruit.h for supported values
+  Bluefruit.setName("Bluefruit52");
+
+  // Configure and start DIS (Device Information Service)
+  bledis.setManufacturer("Adafruit Industries");
+  bledis.setModel("Bluefruit Feather 52");
+  bledis.begin();
+
+  /* Start BLE HID
+   * Note: Apple requires BLE devices to have a min connection interval >= 20m
+   * (The smaller the connection interval the faster we can send data).
+   * However, for HID and MIDI device Apple will accept a min connection
+   * interval as low as 11.25 ms. Therefore BLEHidAdafruit::begin() will try to
+   * set the min and max connection interval to 11.25 ms and 15 ms respectively
+   * for the best performance.
+   */
+  blehid.begin();
+
+  /* Set connection interval (min, max) to your perferred value.
+   * Note: It is already set by BLEHidAdafruit::begin() to 11.25ms - 15ms
+   * min = 9*1.25=11.25 ms, max = 12*1.25= 15 ms
+   */
+  /* Bluefruit.Periph.setConnInterval(9, 12); */
+
+  // Set up and start advertising
+  startAdv();
+
+
+
 
 }
 
+void startAdv(void)
+{
+  // Advertising packet
+  Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
+  Bluefruit.Advertising.addTxPower();
+  Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
 
+  // Include BLE HID service
+  Bluefruit.Advertising.addService(blehid);
+
+  // There is enough room for the dev name in the advertising packet
+  Bluefruit.Advertising.addName();
+  
+  /* Start Advertising
+   * - Enable auto advertising if disconnected
+   * - Interval:  fast mode = 20 ms, slow mode = 152.5 ms
+   * - Timeout for fast mode is 30 seconds
+   * - Start(timeout) with timeout = 0 will advertise forever (until connected)
+   * 
+   * For recommended advertising interval
+   * https://developer.apple.com/library/content/qa/qa1931/_index.html   
+   */
+  Bluefruit.Advertising.restartOnDisconnect(true);
+  Bluefruit.Advertising.setInterval(32, 244);    // in unit of 0.625 ms
+  Bluefruit.Advertising.setFastTimeout(30);      // number of seconds in fast mode
+  Bluefruit.Advertising.start(0);                // 0 = Don't stop advertising after n seconds  
+}
 
 // ************************************************
 //        MAIN LOOP 
@@ -231,7 +331,8 @@ void updateShutterTriggerButtonLogic(){
     // for short presses it sets the logic based on if the wheel trigger is active
     case NORMAL:
       if (shutterTriggerButton.wasReleased()){
-        ledController.turnOnOff(wheelTriggerActive);
+        // ledController.turnOnOff(wheelTriggerActive);
+        sendShutterReleaseCommand();
       }
       else if (shutterTriggerButton.pressedFor(LONG_PRESS)){
         longPressTimeoutStartTime = millis();
@@ -338,18 +439,56 @@ void resetBluetoothCredentials(){
 
 
 
+
+void sendShutterReleaseCommand(){
+  // Make sure we are connected and bonded/paired
+  for (uint16_t conn_hdl=0; conn_hdl < BLE_MAX_CONNECTION; conn_hdl++)
+  {
+    BLEConnection* connection = Bluefruit.Connection(conn_hdl);
+
+    if ( connection && connection->connected() && connection->paired() )
+    {
+      // Turn on red LED when we start sending data
+      digitalWrite(LED_RED, 1);
+
+      // Send the 'volume down' key press to the peer
+      // Check tinyusb/src/class/hid/hid.h for a list of valid consumer usage codes
+      blehid.consumerKeyPress(conn_hdl, HID_USAGE_CONSUMER_VOLUME_DECREMENT);
+
+      // Delay a bit between reports
+      delay(10);
+
+      // Send key release
+      blehid.consumerKeyRelease(conn_hdl);
+
+      // Turn off the red LED
+      digitalWrite(LED_RED, 0);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
 void readAndReactToTemperature(){
 
   float reading;
  
   reading = analogRead(THERMISTORPIN);
  
-  // Serial.print("Analog reading "); 
-  // Serial.println(reading);
- 
+ #if defined(__SERIAL_MONITOR__) 
+  Serial.print("Analog reading "); 
+  Serial.println(reading);
+ #endif
+
   // convert the value to resistance
   reading = (1023 / reading)  - 1;     // (1023/ADC - 1) 
-  reading = SERIESRESISTOR / reading;  // 10K / (1023/ADC - 1)
+  reading = SERIESRESISTOR / reading + RESISTANCE_OFFSET;  // 100K / (1023/ADC - 1)
   // Serial.print("Thermistor resistance "); 
   // Serial.println(reading);
 
@@ -362,9 +501,6 @@ void readAndReactToTemperature(){
   steinhart -= 273.15;                         // convert to C
   
 #if defined(__SERIAL_MONITOR__)  
-  Serial.print("Analog reading "); 
-  Serial.println(reading);
-
   Serial.print("Thermistor resistance "); 
   Serial.println(reading);
 
