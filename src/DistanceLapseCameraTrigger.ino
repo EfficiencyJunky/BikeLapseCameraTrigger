@@ -299,6 +299,7 @@ void loop() {
     if (wheelRotationCounter % numRotationsToTrigger == 0)
     {
       ledController.turnOn();
+      sendShutterReleaseCommand();
     }
     else
     {
@@ -427,15 +428,15 @@ void updateBluetoothResetButtonLogic(){
 void resetBluetoothCredentials(){
 
   // digitalWrite(LED_PIN, LOW);
-  analogWrite(ledPin, 0);
+  analogWrite(LED_PIN, 0);
   delay(100);
 
   for(uint8_t i = 0; i < 15; i++){
     // digitalWrite(LED_PIN, HIGH);
-    analogWrite(ledPin, 255);
+    analogWrite(LED_PIN, 255);
     delay(50);
     // digitalWrite(LED_PIN, LOW);
-    analogWrite(ledPin, 0);
+    analogWrite(LED_PIN, 0);
     delay(50);
   }
 }
