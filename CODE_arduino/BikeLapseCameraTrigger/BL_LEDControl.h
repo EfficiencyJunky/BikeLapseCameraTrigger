@@ -5,8 +5,8 @@
   Released into the public domain.
 */
 
-#ifndef DL_LEDController_h
-#define DL_LEDController_h
+#ifndef BL_LEDControl_h
+#define BL_LEDControl_h
 
 // ******************************************************************
 //            Includes and Defines
@@ -20,7 +20,7 @@
 //    It uses software timers to ensure that it doesn't 
 //    block the main thread
 // ******************************************************************
-class DL_LEDController
+class BL_LEDControl
 {
 
   private:
@@ -45,7 +45,7 @@ class DL_LEDController
   // ******************************************************************    
   //                         CONSTRUCTOR                     
   // ******************************************************************
-    DL_LEDController(const uint8_t _ledPin) : ledPin(_ledPin){}
+    BL_LEDControl(const uint8_t _ledPin) : ledPin(_ledPin){}
 
   // ******************************************************************    
   //                         PUBLIC METHODS

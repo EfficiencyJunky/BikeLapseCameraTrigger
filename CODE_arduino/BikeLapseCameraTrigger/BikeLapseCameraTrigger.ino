@@ -17,8 +17,8 @@
 // ************************************************
 //        HARDWARE DECLARATIONS
 // ************************************************
-// #define __ARDUINO_UNO__
-#define __FEATHER_NRF52832__
+#define __ARDUINO_UNO__
+// #define __FEATHER_NRF52832__
 // #define __FEATHER_ESP8266__
 
 // use this to turn on the serial monitor
@@ -38,7 +38,7 @@
 
 // INFO ON THE BUTTON LIBRARY HERE: https://github.com/JChristensen/JC_Button
 #include <JC_Button.h>
-#include "DL_LEDController.h"
+#include "BL_LEDControl.h"
 
 
 // ************************************************
@@ -122,7 +122,7 @@ bool wheelTriggerActive = true;
 //        LED PIN AND CONTROL CLASS VARIABLES
 // ************************************************
 
-DL_LEDController ledController(LED_PIN);
+BL_LEDControl ledController(LED_PIN);
 
 
 // ************************************************

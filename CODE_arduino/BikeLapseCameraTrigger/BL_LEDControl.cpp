@@ -1,6 +1,6 @@
 
 
-#include "DL_LEDController.h"
+#include "BL_LEDControl.h"
 
 // ******************************************************************    
 //                 LED Controller CLASS
@@ -14,7 +14,7 @@
 // ******************************************************************    
 //                         UPDATE METHOD
 // ******************************************************************  
-void DL_LEDController::Update() {
+void BL_LEDControl::Update() {
 
     switch (STATE) {
         // inactive state so we aren't constantly writing to the LED pin
@@ -80,14 +80,14 @@ void DL_LEDController::Update() {
 /*----------------------------------------------------------------------*
 / Set the state to LED_ON                                               *
 /-----------------------------------------------------------------------*/
-void DL_LEDController::turnOn() {
+void BL_LEDControl::turnOn() {
     STATE = LED_ON;
 }
 
 /*----------------------------------------------------------------------*
 / Set the state to LED_OFF                                              *
 /-----------------------------------------------------------------------*/
-void DL_LEDController::turnOff() {
+void BL_LEDControl::turnOff() {
     STATE = LED_OFF;
 }
 
@@ -95,7 +95,7 @@ void DL_LEDController::turnOff() {
 / Set the state to LED_ON_ON or LED_ON_OFF depending on if the input    *
 / is inverted and record the time this occured                          *
 /-----------------------------------------------------------------------*/
-void DL_LEDController::turnOnOff(bool normalState) {
+void BL_LEDControl::turnOnOff(bool normalState) {
     if(normalState) {
         STATE = LED_ON_OFF;
     }
@@ -109,7 +109,7 @@ void DL_LEDController::turnOnOff(bool normalState) {
 /*----------------------------------------------------------------------*
 / Set the state to LED_PULSE                                            *
 /-----------------------------------------------------------------------*/
-void DL_LEDController::pulse(bool normalState) {
+void BL_LEDControl::pulse(bool normalState) {
     
     if(normalState) {
         STATE = LED_PULSE;
