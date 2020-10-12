@@ -1,0 +1,28 @@
+Build Order,Customer Reference,Reference Designator,Quantity,Unit Price,Extended Price,Supplier,Supplier Part Number,Manufacturer,Manufacturer Part Number,Supplier Description,LINK,ALTERNATIVE LINK
+0,MAIN PCB,PCB1,1,$7.77,$7.77,OshPark,Ilz2K1SV,OshPark,Ilz2K1SV,BikeLapse Camera Trigger MAIN BOARD - V1.3p20,https://oshpark.com/shared_projects/9x3r3ocN,
+1,210 Ohm Resistor for LED,R1,1,$0.10,$0.10,Digi-Key,210XBK-ND,Yageo,MFR-25FBF52-210R,RES 210 OHM 1/4W 1% AXIAL,https://www.digikey.com/en/products/detail/yageo/MFR-25FBF52-210R/12859,
+3,Female Headers - Straight,various,1,$2.95,$2.95,Digi-Key,1528-2537-ND,Adafruit Industries LLC,598,36-PIN 0.1 FEMALE HEADER- 5PK,https://www.digikey.com/en/products/detail/adafruit-industries-llc/598/8299908,https://www.adafruit.com/product/598
+3,male headers - Straight,various,2,$0.69,$1.38,Digi-Key,HDR100IMP40M-G-V-TH-ND,Chip Quik Inc.,HDR100IMP40M-G-V-TH,CONN HEADER VERT 40POS 2.54MM,https://www.digikey.com/en/products/detail/chip-quik-inc/HDR100IMP40M-G-V-TH/5978197,
+4,Wheel Sensor (Reed Switch) Connector R/A Headers,S1,1,$0.53,$0.53,Digi-Key,732-2699-ND,Würth Elektronik,61900211021,CONN HEADER R/A 2POS 2.54MM,https://www.digikey.com/en/products/detail/w-rth-elektronik/61900211021/2508468,
+4,Wheel Sensor (Reed Switch) Connector Housing,S1_external,1,$0.13,$0.13,Digi-Key,732-2867-ND,Würth Elektronik,61900211621,CONN HSNG 2POS FEMALE 2.54MM,https://www.digikey.com/en/products/detail/w-rth-elektronik/61900211621/2508636,
+4,Wheel Sensor (Reed Switch) Connector Receptacle Crimp Pins,S1_external,3,$0.10,$0.30,Digi-Key,S9473CT-ND,Sullins Connector Solutions,SWT25X-URTC-S01-UU-UU,CONN SOCKET 20-26AWG CRIMP TIN,https://www.digikey.com/en/products/detail/sullins-connector-solutions/SWT25X-URTC-S01-UU-UU/2769670,
+4,Wheel Rotation Sensor (Reed Switch) w/ magnet,S1_external,1,$15.37,$15.37,Planet Bike,SKU #8000-3,Planet Bike,SKU #8000-3,PROTEGÉ TANDEM BRACKET - 160CM WIRE,https://www.planetbike.com/protege-tandem-bracket-160cm-wire/,https://www.amazon.com/dp/B001CJVK9S/
+4,Arduino Bluetooth Brain Board -- NEW,U1,1,$24.95,$24.95,Digi-Key,1528-2828-ND,Adafruit Industries LLC,4062,ADAFRUIT FEATHER NRF52840 EXPRES,https://www.digikey.com/en/products/detail/adafruit-industries-llc/4062/9843410,https://www.adafruit.com/product/4062
+4,BUTTONS PCB,U2_PCB2,1,$1.08,$1.08,OshPark,NAQApft2,OshPark,NAQApft2,BikeLapse Camera Trigger BUTTON BOARD - V1.3p18,https://oshpark.com/shared_projects/NAQApft2,
+4,12mm Button - CAMERA_TRIGGER,U2_B1,1,$0.49,$0.49,Digi-Key,430476085716-ND,Würth Elektronik,430476085716,SWITCH TACTILE SPST-NO 0.05A 12V,https://www.digikey.com/en/products/detail/w-rth-elektronik/430476085716/5209048,
+4,6mm Button - BLE_RESET,U2_B2,1,$0.40,$0.40,Digi-Key,SW406-ND,Omron Electronics Inc-EMC Div,B3F-1070,SWITCH TACTILE SPST-NO 0.05A 24V,https://www.digikey.com/en/products/detail/omron-electronics-inc-emc-div/B3F-1070/38362,
+5,male headers - R/A,J1,1,$0.79,$0.79,Digi-Key,HDR100IMP40M-G-RA-TH-ND,Chip Quik Inc.,HDR100IMP40M-G-RA-TH,CONN HEADER R/A 40POS 2.54MM,https://www.digikey.com/en/products/detail/chip-quik-inc/HDR100IMP40M-G-RA-TH/5978204,
+5,On/Off Switch Straight,J1,1,$0.65,$0.65,Digi-Key,EG1903-ND,E-Switch,EG1218,SWITCH SLIDE SPDT 200MA 30V,https://www.digikey.com/en/products/detail/e-switch/EG1218/101726,
+5,LED 5MM,LED1,1,$0.35,$0.35,Digi-Key,1125-1188-ND,Marktech Optoelectronics,MT4118-HR-A,LED RED DIFFUSED 5MM ROUND T/H,https://www.digikey.com/en/products/detail/marktech-optoelectronics/MT4118-HR-A/4214622,
+6,Jumper Shorting Connectors,misc,2,$0.10,$0.20,Digi-Key,S9337-ND,Sullins Connector Solutions,QPC02SXGN-RC,"CONN JUMPER SHORTING .100"" GOLD",https://www.digikey.com/en/products/detail/sullins-connector-solutions/QPC02SXGN-RC/2618262,
+7,M3 Screw w/ Phillips Head -- 8mm length,hardware,2,$0.05,$4.57,McMaster-Carr,92010A118,McMaster-Carr,92010A118,"Passivated 18-8 Stainless Steel Phillips Flat Head Screw
+M3 x 0.5 mm Thread, 8 mm Long",https://www.mcmaster.com/92010A118/,
+7,M3 Hex Lock Nut,hardware,2,$0.04,$3.57,McMaster-Carr,90576A102,McMaster-Carr,90576A102,"Medium-Strength Steel Nylon-Insert Locknut
+Class 8, Zinc Plated, M3 x 0.5 mm Thread, 4 mm High",https://www.mcmaster.com/90576A102/,
+8,500mah Li-Ion Battery,power,1,$7.95,$7.95,Digi-Key,1528-1841-ND,Adafruit Industries LLC,1578,BATTERY LITHIUM 3.7V 500MAH,https://www.digikey.com/en/products/detail/adafruit-industries-llc/1578/5054539,https://www.adafruit.com/product/1578
+9,"No6 Thread Cutting Screw w/ Phillips Head -- 1/4"" Length",hardware,4,$0.05,$5.02,McMaster-Carr,94629A180,McMaster-Carr,94629A180,"Thread-Cutting Screws for Plastic
+410 Stainless Steel, Number 6 Size, 1/4"" Long",https://www.mcmaster.com/94629A180/,
+9,M4 Screw w/ Hex Socket Head,hardware,1,$0.09,$9.22,McMaster-Carr,91290A148,McMaster-Carr,91290A148,"Black-Oxide Alloy Steel Socket Head Screw
+M4 x 0.7 mm Thread, 12 mm Long",https://www.mcmaster.com/91290A148/,
+9,M4 Nut,hardware,1,$0.06,$6.45,McMaster-Carr,91828A231,McMaster-Carr,91828A231,"18-8 Stainless Steel Hex Nut
+M4 x 0.7 mm Thread",https://www.mcmaster.com/91828A231/,

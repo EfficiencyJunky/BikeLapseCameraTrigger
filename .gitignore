@@ -1,8 +1,6 @@
 .vscode/
-build/
-src/.vscode/
-test_code/
 CODE/_TESTING_MODULES
+CODE/build
 docs/
+ELECTRONICS/COMPONENTS/_orders
 ENCLOSURE/3D_MODELS/_archive
-
