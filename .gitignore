@@ -2,5 +2,7 @@
 build/
 src/.vscode/
 test_code/
-CODE_arduino/_TESTING_MODULES
-docs/img
+CODE/_TESTING_MODULES
+docs/
+ENCLOSURE/3D_MODELS/_archive
+

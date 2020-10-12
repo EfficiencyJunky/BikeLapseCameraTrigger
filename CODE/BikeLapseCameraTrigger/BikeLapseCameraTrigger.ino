@@ -19,6 +19,7 @@
 // ************************************************
 #define __ARDUINO_UNO__
 // #define __FEATHER_NRF52832__
+// #define __FEATHER_NRF52840__
 // #define __FEATHER_ESP8266__
 
 // use this to turn on the serial monitor
@@ -51,6 +52,21 @@
   #define LED_PIN 9
   #define RESISTANCE_OFFSET 0
   #define SERIAL_BAUDRATE 9600
+#elif defined(__FEATHER_NRF52840__)
+  #define WHEEL_TRIGGER_PIN 12
+  #define SHUTTER_TRIGGER_PIN 14
+  #define BLE_RESET_PIN 13
+  #define LED_PIN 11
+  // #define LED_PIN LED_RED // onboard LED
+  #define RESISTANCE_OFFSET 0
+  #define SERIAL_BAUDRATE 115200
+  // ************************************************
+  //        JUMPER PIN VARIABLES
+  // ************************************************
+  #define SELECT_PIN_1 = 6; // Jumper for 2 rotations per trigger
+  #define SELECT_PIN_2 = 5; // Jumper for 3 rotations per trigger
+  #define SELECT_PIN_3 = SCL; // p0.11 Jumper for 4 rotations per trigger
+  #define SELECT_PIN_4 = SDA; // p0.12 Jumper for 5 rotations per trigger
 #elif defined(__FEATHER_NRF52832__)
   #define WHEEL_TRIGGER_PIN 12
   #define SHUTTER_TRIGGER_PIN 14
@@ -59,6 +75,13 @@
   // #define LED_PIN LED_RED // onboard LED
   #define RESISTANCE_OFFSET 0
   #define SERIAL_BAUDRATE 115200
+  // ************************************************
+  //        JUMPER PIN VARIABLES
+  // ************************************************
+  #define SELECT_PIN_1 = 30; // Jumper for 2 rotations per trigger
+  #define SELECT_PIN_2 = 27; // Jumper for 3 rotations per trigger
+  #define SELECT_PIN_3 = SCL; // Jumper for 4 rotations per trigger
+  #define SELECT_PIN_4 = SDA; // Jumper for 5 rotations per trigger
 #elif defined(__FEATHER_ESP8266__)
   #define WHEEL_TRIGGER_PIN 14
   #define SHUTTER_TRIGGER_PIN 12
@@ -66,6 +89,13 @@
   #define LED_PIN 15
   #define RESISTANCE_OFFSET 10000
   #define SERIAL_BAUDRATE 9600
+  // ************************************************
+  //        JUMPER PIN VARIABLES
+  // ************************************************
+  #define SELECT_PIN_1 = 16; // Jumper for 2 rotations per trigger
+  #define SELECT_PIN_2 = 2; // Jumper for 3 rotations per trigger
+  #define SELECT_PIN_3 = 5; // Jumper for 4 rotations per trigger
+  #define SELECT_PIN_4 = 4; // Jumper for 5 rotations per trigger  
 #endif
 
 
@@ -156,13 +186,7 @@ bool displayThermistor = false;
 
 
 
-// ************************************************
-//        JUMPER PIN VARIABLES
-// ************************************************
-const int selectPin1 = 16; // Jumper for 2 rotations per trigger
-const int selectPin2 = 2; // Jumper for 3 rotations per trigger
-const int selectPin3 = 5; // Jumper for 4 rotations per trigger
-const int selectPin4 = 4; // Jumper for 5 rotations per trigger
+
 
 
 
@@ -184,22 +208,22 @@ void setup() {
   // sensorValue = analogRead(sensorPin);   
   
   // initialize the selectPins as inputs:
-//  pinMode(selectPin1, INPUT_PULLUP);
-//  pinMode(selectPin2, INPUT_PULLUP);
-//  pinMode(selectPin3, INPUT_PULLUP);
-//  pinMode(selectPin4, INPUT_PULLUP);
+//  pinMode(SELECT_PIN_1, INPUT_PULLUP);
+//  pinMode(SELECT_PIN_2, INPUT_PULLUP);
+//  pinMode(SELECT_PIN_3, INPUT_PULLUP);
+//  pinMode(SELECT_PIN_4, INPUT_PULLUP);
 
 
-//  if(digitalRead(selectPin1) == LOW){
+//  if(digitalRead(SELECT_PIN_1) == LOW){
 //    numRotationsToTrigger = 2;
 //  }
-//  else if(digitalRead(selectPin2) == LOW){
+//  else if(digitalRead(SELECT_PIN_2) == LOW){
 //    numRotationsToTrigger = 3;
 //  }
-//  else if(digitalRead(selectPin3) == LOW){
+//  else if(digitalRead(SELECT_PIN_3) == LOW){
 //    numRotationsToTrigger = 4;
 //  }  
-//  else if(digitalRead(selectPin4) == LOW){
+//  else if(digitalRead(SELECT_PIN_4) == LOW){
 //    numRotationsToTrigger = 5;
 //  }
 //  else{
