@@ -2,7 +2,9 @@
 
 The BikeLapse Camera Trigger is an Arduino based system for using distance (number of wheel rotations on a bike) to trigger a camera shutter release (as opposed to TimeLapse which uses time). It's part of a larger platform called BikeLapse.com that seeks to make it fun and easy to create a virtual catalog of bike rides (or other adventure activities). Plus it's entirely free and open source.
 
-This repository is home to everything you should need to build your own BikeLapse Camera Trigger. Once you've made the Camera Trigger hardware, visit the BikeLapse.com GitHub repo to learn how to clone the repo (you'll need to modify a couple things of course) and enable your own BikeLapse style website hosted for free on GitHub pages. (it should take less than an hour to get your own instance up and running thanks to the magic of Github).
+![BikeLapse Hardware Virtual Demo](ENCLOSURE/DEMOS/BikeLapse_Demo_VIRTUAL.gif)
+
+This repository is home to everything you should need to build your own BikeLapse Camera Trigger as seen in the animated GIF above and demo videos below. Once you've made the Camera Trigger hardware, visit the BikeLapse.com GitHub repo to learn how to clone the repo (you'll need to modify a couple things of course) and enable your own BikeLapse style website hosted for free on GitHub pages. (it should take less than an hour to get your own instance up and running thanks to the magic of Github).
 
 
 # DEMOS
