@@ -1,5 +1,5 @@
 Build Order,Customer Reference,Reference Designator,Quantity,Unit Price,Extended Price,Supplier,Supplier Part Number,Manufacturer,Manufacturer Part Number,Supplier Description,LINK,ALTERNATIVE LINK
-0,MAIN PCB,PCB1,1,$7.77,$7.77,OshPark,Ilz2K1SV,OshPark,Ilz2K1SV,BikeLapse Camera Trigger MAIN BOARD - V1.3p20,https://oshpark.com/shared_projects/9x3r3ocN,
+0,MAIN PCB,PCB1,1,$7.77,$7.77,OshPark,EXvpXMaC,OshPark,EXvpXMaC,BikeLapse Camera Trigger MAIN BOARD - V1.3p20,https://oshpark.com/shared_projects/EXvpXMaC,
 1,210 Ohm Resistor for LED,R1,1,$0.10,$0.10,Digi-Key,210XBK-ND,Yageo,MFR-25FBF52-210R,RES 210 OHM 1/4W 1% AXIAL,https://www.digikey.com/en/products/detail/yageo/MFR-25FBF52-210R/12859,
 3,Female Headers - Straight,various,1,$2.95,$2.95,Digi-Key,1528-2537-ND,Adafruit Industries LLC,598,36-PIN 0.1 FEMALE HEADER- 5PK,https://www.digikey.com/en/products/detail/adafruit-industries-llc/598/8299908,https://www.adafruit.com/product/598
 3,male headers - Straight,various,2,$0.69,$1.38,Digi-Key,HDR100IMP40M-G-V-TH-ND,Chip Quik Inc.,HDR100IMP40M-G-V-TH,CONN HEADER VERT 40POS 2.54MM,https://www.digikey.com/en/products/detail/chip-quik-inc/HDR100IMP40M-G-V-TH/5978197,
