@@ -17,24 +17,24 @@
 // ************************************************
 //        HARDWARE DECLARATIONS
 // ************************************************
-#define __ARDUINO_UNO__
+#define __FEATHER_NRF52840__
 // #define __FEATHER_NRF52832__
-// #define __FEATHER_NRF52840__
-// #define __FEATHER_ESP8266__
 
-// use this to turn on the serial monitor
-// will post the temperature readings from the thermistor to serial monitor
+
+// uncomment this #define to enable the serial monitor 
+// we are using it only for testing the temperature readings from the thermistor
+// when the BLE_RESET button is short pressed, the thermistor information will be printed to the serial monitor
 // #define __SERIAL_MONITOR__
 
 // ************************************************
 //        LIBRARY INCLUDES
 // ************************************************
-#if defined(__FEATHER_NRF52832__)
+#if defined(__FEATHER_NRF52832__) || defined(__FEATHER_NRF52840__)
   #include <bluefruit.h>
   BLEDis bledis;
   BLEHidAdafruit blehid;
-#elif defined(__FEATHER_ESP8266__)
-  #include <ESP8266WiFi.h>
+//#elif defined(__FEATHER_ESP8266__)
+//  #include <ESP8266WiFi.h>
 #endif
 
 // INFO ON THE BUTTON LIBRARY HERE: https://github.com/JChristensen/JC_Button
@@ -45,18 +45,11 @@
 // ************************************************
 //        PIN AND HARDWARE DEFINITIONS
 // ************************************************
-#if defined(__ARDUINO_UNO__)
-  #define WHEEL_TRIGGER_PIN 2
-  #define SHUTTER_TRIGGER_PIN 11
-  #define BLE_RESET_PIN 10
-  #define LED_PIN 9
-  #define RESISTANCE_OFFSET 0
-  #define SERIAL_BAUDRATE 9600
-#elif defined(__FEATHER_NRF52840__)
-  #define WHEEL_TRIGGER_PIN 12
-  #define SHUTTER_TRIGGER_PIN 14
-  #define BLE_RESET_PIN 13
-  #define LED_PIN 11
+#if defined(__FEATHER_NRF52840__)
+  #define WHEEL_TRIGGER_PIN 26 // SCK
+  #define SHUTTER_TRIGGER_PIN 24 // MISO
+  #define BLE_RESET_PIN 25  // MOSI
+  #define LED_PIN 10
   // #define LED_PIN LED_RED // onboard LED
   #define RESISTANCE_OFFSET 0
   #define SERIAL_BAUDRATE 115200
@@ -68,9 +61,9 @@
   #define SELECT_PIN_3 = SCL; // p0.11 Jumper for 4 rotations per trigger
   #define SELECT_PIN_4 = SDA; // p0.12 Jumper for 5 rotations per trigger
 #elif defined(__FEATHER_NRF52832__)
-  #define WHEEL_TRIGGER_PIN 12
-  #define SHUTTER_TRIGGER_PIN 14
-  #define BLE_RESET_PIN 13
+  #define WHEEL_TRIGGER_PIN 12  // SCK
+  #define SHUTTER_TRIGGER_PIN 14 // MISO
+  #define BLE_RESET_PIN 13 // MOSI
   #define LED_PIN 11
   // #define LED_PIN LED_RED // onboard LED
   #define RESISTANCE_OFFSET 0
@@ -82,20 +75,6 @@
   #define SELECT_PIN_2 = 27; // Jumper for 3 rotations per trigger
   #define SELECT_PIN_3 = SCL; // Jumper for 4 rotations per trigger
   #define SELECT_PIN_4 = SDA; // Jumper for 5 rotations per trigger
-#elif defined(__FEATHER_ESP8266__)
-  #define WHEEL_TRIGGER_PIN 14
-  #define SHUTTER_TRIGGER_PIN 12
-  #define BLE_RESET_PIN 13
-  #define LED_PIN 15
-  #define RESISTANCE_OFFSET 10000
-  #define SERIAL_BAUDRATE 9600
-  // ************************************************
-  //        JUMPER PIN VARIABLES
-  // ************************************************
-  #define SELECT_PIN_1 = 16; // Jumper for 2 rotations per trigger
-  #define SELECT_PIN_2 = 2; // Jumper for 3 rotations per trigger
-  #define SELECT_PIN_3 = 5; // Jumper for 4 rotations per trigger
-  #define SELECT_PIN_4 = 4; // Jumper for 5 rotations per trigger  
 #endif
 
 
@@ -144,14 +123,13 @@ unsigned long longPressTimeoutInterval = 4000;
 //        WHEEL TRIGGER LOGIC VARIABLES
 // ************************************************
 int wheelRotationCounter = 0;   // counter for the number of button presses
-int numRotationsToTrigger = 4;  // the number of rotations it takes to trigger the camera
+int numRotationsToTrigger = 4;  // the default number of rotations it takes to trigger the camera
 bool wheelTriggerActive = true;
 
 
 // ************************************************
 //        LED PIN AND CONTROL CLASS VARIABLES
 // ************************************************
-
 BL_LEDControl ledController(LED_PIN);
 
 
@@ -162,12 +140,14 @@ BL_LEDControl ledController(LED_PIN);
 // https://learn.adafruit.com/thermistor/overview by Limor Fried, Adafruit Industries
 // MIT License - please keep attribution and consider buying parts from Adafruit
 
-// which analog pin to connect
-#define THERMISTORPIN A0         
+// What pin to connect the sensor to
+#define THERMISTORPIN A0
+//const int thermistorPin = A0;  // the pin that the thermistor reading is taken from
 // resistance at 25 degrees C -- set this to the value in your thermistor's datasheet
 #define THERMISTORNOMINAL 100000      
-// temp. for nominal resistance (almost always 25 C (or 77 F) ) -- To convert Celsius to Farenheight, Multiply by 1.8 (or 9/5) and add 32.
-#define TEMPERATURENOMINAL 25   
+// temp. for nominal resistance (datasheets almost always say 25 C (or 77 F) ) -- To convert Celsius to Farenheight, Multiply by 1.8 (or 9/5) and add 32.
+//#define TEMPERATURENOMINAL 25
+#define TEMPERATURENOMINAL 22.22   // decided to go with actual room temperature 22.2 C (or 72 F) because it seemed more accurate in actual testing
 // how many samples to take and average, more takes longer
 // but is more 'smooth'
 #define NUMSAMPLES 5
@@ -176,16 +156,10 @@ BL_LEDControl ledController(LED_PIN);
 // the value of the 'other' resistor which can be any value but to make things easy just make it as close to the 
 // nominal value of the thermistor. Make sure to measure the ACTUAL value of your resistor and put it's actual value here
 #define SERIESRESISTOR 100000
-// #define SERIESRESISTOR 93600  
-// What pin to connect the sensor to
-#define THERMISTORPIN A0 
- 
-//const int thermistorPin = A0;  // the pin that the thermistor reading is taken from
+// #define SERIESRESISTOR 93600  // this is a different value for a series resistor that isn't quite 100k
+
 int thermistorValue = 0;  // variable to store the value coming from the sensor
 bool displayThermistor = false;
-
-
-
 
 
 
@@ -204,9 +178,8 @@ void setup() {
   shutterTriggerButton.begin();
   bluetoothResetButton.begin();
 
-  // pinMode(thermistorPin, INPUT); // this is modified only in the TransistorTrigger Class
-  // sensorValue = analogRead(sensorPin);   
-  
+
+  // UNCOMMENT THE FOLLOWING CODE TO ENABLE SETTING THE NUMBER OF WHEEL ROTATIONS FOR TRIGGERING THE CAMERA  
   // initialize the selectPins as inputs:
 //  pinMode(SELECT_PIN_1, INPUT_PULLUP);
 //  pinMode(SELECT_PIN_2, INPUT_PULLUP);
@@ -230,16 +203,23 @@ void setup() {
 //    numRotationsToTrigger = 4;
 //  }
 
+
+//  pinMode(THERMISTORPIN, INPUT); // don't actually need to specify this because it's an Analog pin
+
+// THIS IS FOR THE THERMISTOR READINGS TO DISPLAY IN THE SERIAL MONITOR
 #if defined(__SERIAL_MONITOR__)
   Serial.begin(SERIAL_BAUDRATE);       // use the serial port at the baudrate defined by the hardware
+  
   #if defined(__FEATHER_NRF52832__)
-    while ( !Serial ) delay(10);   // for nrf52840 with native usb
+    while ( !Serial ) delay(10);   // for nrf52832 without native usb
   #endif
 #endif
 
+
+  // INITIALIZE ALL OF THE BLUETOOTH HARDWARE
   Bluefruit.begin();
   Bluefruit.setTxPower(4);    // Check bluefruit.h for supported values
-  Bluefruit.setName("Bluefruit52");
+  Bluefruit.setName("Bluefruit52"); // sets the name of the device that shows up on your phone's Bluetooth list
 
   // Configure and start DIS (Device Information Service)
   bledis.setManufacturer("Adafruit Industries");
@@ -264,8 +244,6 @@ void setup() {
 
   // Set up and start advertising
   startAdv();
-
-
 
 
 }
@@ -503,8 +481,6 @@ void sendShutterReleaseCommand(){
 
 
 
-
-
 void readAndReactToTemperature(){
 
   float reading;
@@ -544,24 +520,3 @@ void readAndReactToTemperature(){
 #endif
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
